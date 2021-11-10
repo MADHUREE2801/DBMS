@@ -1,0 +1,110 @@
+use sai;
+/*create table SIGNUP(Username char(10),Emailaddress char(15),Password char(5),ConfirmPassword char(5));
+insert into SIGNUP values( "sai74202","aaa@gmail.com","aabbc","aabbc"),("jjj123","bbb@gmail.com","mmmbq","mmmbq"),
+("sai2801","sai28@gmail.com","ggoty","ggoty"),("abc123","acq@gmail.com","qqcvd","qqcvd"),
+("nature123","nat7@gmail.com","om123","om123");
+
+select * from SIGNUP;
+
+create table LOGIN(Username char(10),Password char (5));
+insert into LOGIN values ("sai74202","aabbc"),("sai2801","ggoty"),
+("abc123","qqcvd"),("rej875","pollk");
+select * from LOGIN;
+*/
+/*drop table CUSTOMER_DETAILS;*/
+
+create  table CUSTOMER_DETAILS (Name char(15),Age int,Gender char(7),
+Mobile_no char(10),Id_proof_AADHAR_ID_PANCARD	 char(20), 
+Country_From char(10),State_From char(10));
+insert into CUSTOMER_DETAILS values("AAAA",35,"Male","1234557393",
+"88021AC675","INDIA","TAMIL NADU"),("BBBB",46,"Female","8293747575",
+"45ACD357629","MALAYSIA","PANANG"),("CCCC",50,"MALE","9023456547",
+"87SD123456","INDIA","AP"),("DDDD",20,"MALE","9038588694",
+"57382SSA38","INDIA","PUNJAB"),("AAAA",19,"Female","2345678901","4567AZX",
+"U.S","L.A");
+
+select * from CUSTOMER_DETAILS;
+
+/*drop table BILLING;*/
+
+create table BILLING(NAME char(10),ROOM_TYPE char(20),BEDROOM_TYPE char(10),NO_OF_PERSONS
+ int,NO_OF_ROOMS int,NO_OF_DAYS int,AMOUNT int);
+insert into BILLING values("AAAA","AC","DOUBLE BED",4,2,2,3600),
+("CCCC","AC","SINGLE BED",2,2,3,3000),("BBBB","NON AC","DOUBLE BED",2,1,1,800),
+("DDDD","NON AC","SINGLE BED",2,2,3,2550);
+
+select * from BILLING;
+
+/*drop table BOOKING_DETAILS;*/
+
+create table BOOKING_DETAILS(NAME char(10),AGE int,NO_OF_PERSONS int,
+BEDROOM_TYPE char(20),ROOM_TYPE char(10),NO_OF_ROOMS int,CHECK_IN_DATE 
+char(10),CHECK_OUT_DATE char(10),Security_amount int);
+
+insert into BOOKING_DETAILS values("AAAA",19,4,"DOUBLE BED","AC",2,"10/10/2020",
+"12/10/2020",1000),("CCCC",50,2,"SINGLE BED","AC",2,"12/10/2020","15/10/2020",1000),
+("BBBB",46,2,"DOUBLE BED","NON AC",1,"9/10/2020","10/10/2020",1000),
+("DDDD",20,2,"SINGLE BED","NON AC",2,"22/10/2020","24/10/2020",1000);
+
+select * from BOOKING_DETAILS;
+
+/*drop table CANCEL_BOOKING;*/
+
+create table CANCEL_BOOKING ( NAME char(10),MOBILE_NO char(10),
+EMAIL_ADDRESS char(20));
+insert into CANCEL_BOOKING values("AAAA","1234557393","aaa@gmail.com");
+select * from CANCEL_BOOKING;
+
+/* displaying name and mobile_no for all those customers whose age is above
+30*/
+select Name ,Mobile_no from CUSTOMER_DETAILS where Age >30;
+
+/* display no  of those customers who are not from India*/
+select  count(*) from CUSTOMER_DETAILS where Country_From NOT IN ("India");
+
+/*display the country and email_id of all  the customers who
+ cancelled booking*/
+
+select Country_From ,EMAIL_ADDRESS from CUSTOMER_DETAILS c1 ,
+CANCEL_BOOKING c2 where c1.Name=c2.NAME and c1.Mobile_no=c2.MOBILE_NO;
+
+/*display the maximum amount from BILLING*/
+select max(AMOUNT) from BILLING;
+
+/*display all the check out dates of the customers who 
+
+checked in between 12-10-2020 and 24-10-2020*/
+select CHECK_OUT_DATE from BOOKING_DETAILS where CHECK_IN_DATE between
+"12/10/2020" and "24/10/2020";
+
+/*display the bedroom type of all those customers who have booked rooms*/
+select BEDROOM_TYPE from BOOKING_DETAILS as b JOIN CUSTOMER_DETAILS as c 
+where b.NAME=c.Name;
+
+/*display the count of all the male and female customers*/
+
+select count(*) from CUSTOMER_DETAILS group by Gender  ;
+/*display all the details of all the customers in the 
+decreasing order of age*/
+
+select * from CUSTOMER_DETAILS order by Age desc;  
+
+/* combine Amount and Security_amount */
+select Security_amount from BOOKING_DETAILS union all select Amount from
+BILLING;
+
+/*alter the name of the table CUSTOMER_DETAILS to GUEST_DETAILS*/
+alter table CUSTOMER_DETAILS rename to GUEST_DETAILS;
+
+/* display the distinct room types*/
+select distinct(ROOM_TYPE) from BOOKING_DETAILS;
+
+/*find the total sum of the Amount of all the booking*/
+select sum(Amount) from BILLING;
+
+/* find the minimum Amount of all the bookings*/
+select min(Amount) from BILLING;
+
+/*select the Names of all the customers who stayed either for 2 or 3 days*/
+
+select NAME from BILLING where NO_OF_DAYS=2 or NO_OF_DAYS=3;
